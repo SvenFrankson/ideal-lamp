@@ -445,6 +445,22 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 441614875}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &511778525 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: 3652188e12772854f9c96b919393e39a, type: 3}
+  m_PrefabInternal: {fileID: 513114651}
+--- !u!114 &511778530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 511778525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 280ab437ed5b9194b8ff81f9abf603ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2
 --- !u!1001 &513114651
 Prefab:
   m_ObjectHideFlags: 0
@@ -491,6 +507,22 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3652188e12772854f9c96b919393e39a, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &526811662 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: 3652188e12772854f9c96b919393e39a, type: 3}
+  m_PrefabInternal: {fileID: 885044040}
+--- !u!114 &526811667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 526811662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 280ab437ed5b9194b8ff81f9abf603ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1.5
 --- !u!1 &640455062
 GameObject:
   m_ObjectHideFlags: 0
@@ -1259,6 +1291,22 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e776c3f5dad017346b9ae649ddef0282, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &1286155880 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: 3652188e12772854f9c96b919393e39a, type: 3}
+  m_PrefabInternal: {fileID: 729957673}
+--- !u!114 &1286155885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1286155880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 280ab437ed5b9194b8ff81f9abf603ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
 --- !u!4 &1306742370 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: e776c3f5dad017346b9ae649ddef0282, type: 3}

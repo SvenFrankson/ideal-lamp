@@ -24,9 +24,9 @@ public class Hen : MonoBehaviour {
             while (max < 10 || !inside) {
                 max++;
                 destination = new Vector3(
-                    Random.Range(-10f, 10f),
+                    Random.Range(-5f, 5f),
                     0f,  
-                    Random.Range(-10f, 10f)
+                    Random.Range(-5f, 5f)
                 );
                 if (this.fence.IsInside(this.destination)) {
                     inside = true;
