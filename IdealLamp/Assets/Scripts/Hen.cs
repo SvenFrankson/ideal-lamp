@@ -19,11 +19,22 @@ public class Hen : MonoBehaviour {
     private Vector3 destination;
 	public void Update() {
         if (Vector3.Distance(this.transform.position, destination) < this.speed * Time.deltaTime) {
-            destination = new Vector3(
-                Random.Range(-3f, 3f),
-                0f,  
-                Random.Range(-3f, 3f)
-            );
+            int max = 0;
+            bool inside = false;
+            while (max < 10 || !inside) {
+                max++;
+                destination = new Vector3(
+                    Random.Range(-10f, 10f),
+                    0f,  
+                    Random.Range(-10f, 10f)
+                );
+                if (this.fence.IsInside(this.destination)) {
+                    inside = true;
+                }
+            }
+            if (!inside) {
+                Debug.LogWarning("CHICKEN OUT ! CHICKEN OUT !!!");
+            }
         }
         Vector3 dir = (destination - this.transform.position).normalized;
         this.transform.position += dir * this.speed * Time.deltaTime;
