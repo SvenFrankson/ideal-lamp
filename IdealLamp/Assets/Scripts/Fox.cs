@@ -39,6 +39,9 @@ public class Fox : MonoBehaviour {
 					fenceRotation = -1;
 					return;
 				}
+				if (fenceDirection.x == -1f) {
+					return;
+				}
 			}
 			this.isOnFence = false;
 			this.currentDir = Vector3.forward;
@@ -54,6 +57,9 @@ public class Fox : MonoBehaviour {
 				}
 				if (fenceDirection.z == 1f) {
 					fenceRotation = -1;
+					return;
+				}
+				if (fenceDirection.x == 1f) {
 					return;
 				}
 			}
@@ -73,6 +79,9 @@ public class Fox : MonoBehaviour {
 					fenceRotation = -1;
 					return;
 				}
+				if (fenceDirection.z == 1f) {
+					return;
+				}
 			}
 			this.isOnFence = false;
 			this.currentDir = Vector3.right;
@@ -88,6 +97,9 @@ public class Fox : MonoBehaviour {
 				}
 				if (fenceDirection.x == 1f) {
 					fenceRotation = -1;
+					return;
+				}
+				if (fenceDirection.z == -1f) {
 					return;
 				}
 			}
