@@ -19,6 +19,9 @@ public class Fox : MonoBehaviour {
 	public float fencePos = 0f;
 
 	public Vector3 currentDir = Vector3.zero;
+	public List<Vector3> foxCut;
+	public int cutIndexStart = 0;
+	public int cutIndexEnd = 0;
 
 	public float speed = 0f;
 
@@ -42,8 +45,11 @@ public class Fox : MonoBehaviour {
 				if (fenceDirection.x == -1f) {
 					return;
 				}
+				this.foxCut = new List<Vector3>();
+				this.cutIndexStart = this.fence.FencePosToNodeIndex(this.fencePos);
 			}
 			this.isOnFence = false;
+			this.foxCut.Add(this.transform.position);
 			this.currentDir = Vector3.forward;
 			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
 			return;
@@ -62,8 +68,11 @@ public class Fox : MonoBehaviour {
 				if (fenceDirection.x == 1f) {
 					return;
 				}
+				this.foxCut = new List<Vector3>();
+				this.cutIndexStart = this.fence.FencePosToNodeIndex(this.fencePos);
 			}
 			this.isOnFence = false;
+			this.foxCut.Add(this.transform.position);
 			this.currentDir = Vector3.back;
 			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
 			return;
@@ -82,8 +91,11 @@ public class Fox : MonoBehaviour {
 				if (fenceDirection.z == 1f) {
 					return;
 				}
+				this.foxCut = new List<Vector3>();
+				this.cutIndexStart = this.fence.FencePosToNodeIndex(this.fencePos);
 			}
 			this.isOnFence = false;
+			this.foxCut.Add(this.transform.position);
 			this.currentDir = Vector3.right;
 			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
 			return;
@@ -102,8 +114,11 @@ public class Fox : MonoBehaviour {
 				if (fenceDirection.z == -1f) {
 					return;
 				}
+				this.foxCut = new List<Vector3>();
+				this.cutIndexStart = this.fence.FencePosToNodeIndex(this.fencePos);
 			}
 			this.isOnFence = false;
+			this.foxCut.Add(this.transform.position);
 			this.currentDir = Vector3.left;
 			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
 			return;
@@ -126,7 +141,11 @@ public class Fox : MonoBehaviour {
 			if (fenceIntersection != null) {
 				Debug.Log("Fox joins fence at index '" + intersectionIndex + "'");
 				this.isOnFence = true;
+				this.foxCut.Add(fenceIntersection.GetValueOrDefault());
+				this.cutIndexEnd = intersectionIndex;
+				this.fence.Split(this.cutIndexStart, this.cutIndexEnd, this.foxCut);
 				this.fencePos = this.fence.WorldPosAndIndexToFencePos(fenceIntersection.GetValueOrDefault(), intersectionIndex);
+				Debug.Log("FoxCut is made of " + this.foxCut.Count + " steps.");
 			}
 		}
 	}

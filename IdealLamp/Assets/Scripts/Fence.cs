@@ -26,6 +26,14 @@ public class Fence : MonoBehaviour {
 		int count = this.nodesContainer.childCount;
 		for (int i = 0; i < count; i++) {
 			this.path.Add(this.nodesContainer.GetChild(i).transform.position);
+		}
+		this.UpdateLength();
+	}
+
+	public void UpdateLength() {
+		this.sumLength = new List<float>();
+		this.totalLength = 0f;
+		for (int i = 0; i < this.path.Count; i++) {
 			if (i > 0) {
 				this.sumLength.Add(
 					this.sumLength[i - 1] + Vector3.Distance(this.path[i], this.path[i - 1])
@@ -33,14 +41,21 @@ public class Fence : MonoBehaviour {
 			} else {
 				this.sumLength.Add(0);
 			}
-		}
-		
-		this.totalLength = 0f;
-		for (int i = 0; i < this.path.Count; i++) {
 			Vector3 A = this.path[i];
 			Vector3 B = this.path[(i + 1) % this.path.Count];
 			this.totalLength += Vector3.Distance(A, B);
 		}
+	}
+
+	public void Split(int indexStart, int indexEnd, List<Vector3> pathCut) {
+		if (indexStart < indexEnd) {
+			this.path = this.path.GetRange(indexStart + 1, indexEnd - indexStart);
+			for (int i = pathCut.Count - 1; i >= 0; i--) {
+				this.path.Add(pathCut[i]);
+			}
+		}
+		this.UpdateLength();
+		this.UpdateMesh();
 	}
 
 	public void UpdateMesh() {
