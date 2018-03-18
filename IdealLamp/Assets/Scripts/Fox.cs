@@ -43,6 +43,7 @@ public class Fox : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.LeftArrow)) {
 			this.isOnFence = false;
 			this.currentDir = Vector3.left;
+			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
 			return;
 		}
 
@@ -52,10 +53,12 @@ public class Fox : MonoBehaviour {
 		} else {
 			Vector3 previousPos = this.transform.position;
 			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
-			Vector3? intersectsFence = this.fence.SegmentIntersection(previousPos, this.transform.position);
-			if (intersectsFence != null) {
+			int intersectionIndex;
+			Vector3? fenceIntersection = this.fence.SegmentIntersection(previousPos, this.transform.position, out intersectionIndex);
+			if (fenceIntersection != null) {
+				Debug.Log("Fox joins fence at index '" + intersectionIndex + "'");
 				this.isOnFence = true;
-				this.fencePos = 0f;
+				this.fencePos = this.fence.WorldPosAndIndexToFencePos(fenceIntersection.GetValueOrDefault(), intersectionIndex);
 			}
 		}
 	}

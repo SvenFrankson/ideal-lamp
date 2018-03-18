@@ -26,7 +26,7 @@ public class Fence : MonoBehaviour {
 		int count = this.nodesContainer.childCount;
 		for (int i = 0; i < count; i++) {
 			this.path.Add(this.nodesContainer.GetChild(i).transform.position);
-			if (i - 1 > 0) {
+			if (i > 0) {
 				this.sumLength.Add(
 					this.sumLength[i - 1] + Vector3.Distance(this.path[i], this.path[i - 1])
 				);
@@ -88,21 +88,33 @@ public class Fence : MonoBehaviour {
 		return this.path[index] + (B - A).normalized * deltaPos;
 	}
 
+	public float WorldPosAndIndexToFencePos(Vector3 worldPos, int index) {
+		return this.sumLength[index] + Vector3.Distance(this.path[index], worldPos);
+	}
+
 	public int FencePosToNodeIndex(float fencePos) {
-		int index = 0;
-		while (this.sumLength[(index + 1) % this.sumLength.Count] < fencePos) {
-			index ++;
+		int index = this.path.Count - 1;
+		while (fencePos >= this.totalLength) {
+			fencePos -= this.totalLength;
+		}
+		while (fencePos < 0f) {
+			fencePos += this.totalLength;
+		}
+		while (index > 0 && fencePos <= this.sumLength[index]) {
+			index --;
 		}
 		return index;
 	}
 
-	public Vector3? SegmentIntersection(Vector3 A, Vector3 B) {
+	public Vector3? SegmentIntersection(Vector3 A, Vector3 B, out int segmentIndex) {
 		for (int i = 0; i < this.path.Count; i++) {
 			Vector3? intersection = this.SegmentIntersectionIndex(A, B, i);
 			if (intersection != null) {
+				segmentIndex = i;
 				return intersection;
 			}
 		}
+		segmentIndex = -1;
 		return null;
 	}
 
