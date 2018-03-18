@@ -14,6 +14,8 @@ public class Fence : MonoBehaviour {
 		}
 	}
 	public List<Vector3> path;
+	public List<float> sumLength;
+	public float totalLength;
 
 	public void Start() {
 		this.InitializePath();
@@ -24,6 +26,20 @@ public class Fence : MonoBehaviour {
 		int count = this.nodesContainer.childCount;
 		for (int i = 0; i < count; i++) {
 			this.path.Add(this.nodesContainer.GetChild(i).transform.position);
+			if (i - 1 > 0) {
+				this.sumLength.Add(
+					this.sumLength[i - 1] + Vector3.Distance(this.path[i], this.path[i - 1])
+				);
+			} else {
+				this.sumLength.Add(0);
+			}
+		}
+		
+		this.totalLength = 0f;
+		for (int i = 0; i < this.path.Count; i++) {
+			Vector3 A = this.path[i];
+			Vector3 B = this.path[(i + 1) % this.path.Count];
+			this.totalLength += Vector3.Distance(A, B);
 		}
 	}
 
@@ -58,44 +74,24 @@ public class Fence : MonoBehaviour {
 		}
 	}
 
-	public float Length() {
-		float l = 0f;
-		for (int i = 0; i < this.path.Count; i++) {
-			Vector3 A = this.path[i];
-			Vector3 B = this.path[(i + 1) % this.path.Count];
-			l += Vector3.Distance(A, B);
-		}
-		return l;
-	}
-
 	public Vector3 FencePosToWorldPos(float fencePos) {
-		float l = this.Length();
-		while (fencePos > l) {
-			fencePos -= l;
+		while (fencePos > this.totalLength) {
+			fencePos -= this.totalLength;
 		}
 		while (fencePos < 0f) {
-			fencePos += l;
+			fencePos += this.totalLength;
 		}
-		float tmpL = 0;
-		int index = this.FencePosToNodeIndex(fencePos, out tmpL);
-		float deltaPos = fencePos - tmpL;
+		int index = this.FencePosToNodeIndex(fencePos);
+		float deltaPos = fencePos - this.sumLength[index];
 		Vector3 A = this.path[index];
 		Vector3 B = this.path[(index + 1) % this.path.Count];
 		return this.path[index] + (B - A).normalized * deltaPos;
 	}
 
-	public int FencePosToNodeIndex(float fencePos, out float tmpL) {
-		Vector3 A = this.path[0];
-		Vector3 B = this.path[1];
-		float d = Vector3.Distance(A, B);
+	public int FencePosToNodeIndex(float fencePos) {
 		int index = 0;
-		tmpL = 0f;
-		while (tmpL + d < fencePos) {
+		while (this.sumLength[(index + 1) % this.sumLength.Count] < fencePos) {
 			index ++;
-			A = this.path[index];
-			B = this.path[(index + 1) % this.path.Count];
-			tmpL += d;
-			d = Vector3.Distance(A, B);
 		}
 		return index;
 	}
