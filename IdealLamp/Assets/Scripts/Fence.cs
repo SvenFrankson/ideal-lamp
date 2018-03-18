@@ -161,4 +161,37 @@ public class Fence : MonoBehaviour {
 		}
 		return (count % 2 == 1);
 	}
+
+	public Vector3 RandomInsidePosition() {
+		float minX = float.MaxValue;
+		float maxX = float.MinValue;
+		float minZ = float.MaxValue;
+		float maxZ = float.MinValue;
+
+		for (int i = 0; i < this.path.Count; i++) {
+			minX = Mathf.Min(minX, this.path[i].x);
+			maxX = Mathf.Max(maxX, this.path[i].x);
+			minZ = Mathf.Min(minZ, this.path[i].z);
+			maxZ = Mathf.Max(maxZ, this.path[i].z);
+		}
+
+		int max = 0;
+		bool inside = false;
+		Vector3 random = Vector3.zero;
+		while (max < 10 && !inside) {
+			max++;
+			random = new Vector3(
+				Random.Range(minX, maxX),
+				0f,  
+				Random.Range(minZ, maxZ)
+			);
+			if (this.IsInside(random)) {
+				inside = true;
+			}
+		}
+		if (!inside) {
+			Debug.LogWarning("Careful, inside Vector is returned actually outside.");
+		}
+		return random;
+	}
 }
