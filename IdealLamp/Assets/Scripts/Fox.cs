@@ -15,32 +15,82 @@ public class Fox : MonoBehaviour {
 	}
 
 	public bool isOnFence = true;
+	public int fenceRotation = 1;
 	public float fencePos = 0f;
 
 	public Vector3 currentDir = Vector3.zero;
 
 	public float speed = 0f;
 
+	public Vector3 FenceDirection() {
+		int nodeIndex = this.fence.FencePosToNodeIndex(this.fencePos);
+		return (this.fence.path[(nodeIndex + 1) % this.fence.path.Count] - this.fence.path[nodeIndex]).normalized;
+	}
+
 	public void Update() {
 		if (Input.GetKeyDown(KeyCode.UpArrow)) {
+			if (this.isOnFence) {
+				Vector3 fenceDirection = this.FenceDirection();
+				if (fenceDirection.z == 1f) {
+					fenceRotation = 1;
+					return;
+				}
+				if (fenceDirection.z == -1f) {
+					fenceRotation = -1;
+					return;
+				}
+			}
 			this.isOnFence = false;
 			this.currentDir = Vector3.forward;
 			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
 			return;
 		}
 		if (Input.GetKeyDown(KeyCode.DownArrow)) {
+			if (this.isOnFence) {
+				Vector3 fenceDirection = this.FenceDirection();
+				if (fenceDirection.z == -1f) {
+					fenceRotation = 1;
+					return;
+				}
+				if (fenceDirection.z == 1f) {
+					fenceRotation = -1;
+					return;
+				}
+			}
 			this.isOnFence = false;
 			this.currentDir = Vector3.back;
 			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
 			return;
 		}
 		if (Input.GetKeyDown(KeyCode.RightArrow)) {
+			if (this.isOnFence) {
+				Vector3 fenceDirection = this.FenceDirection();
+				if (fenceDirection.x == 1f) {
+					fenceRotation = 1;
+					return;
+				}
+				if (fenceDirection.x == -1f) {
+					fenceRotation = -1;
+					return;
+				}
+			}
 			this.isOnFence = false;
 			this.currentDir = Vector3.right;
 			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
 			return;
 		}
 		if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+			if (this.isOnFence) {
+				Vector3 fenceDirection = this.FenceDirection();
+				if (fenceDirection.x == -1f) {
+					fenceRotation = 1;
+					return;
+				}
+				if (fenceDirection.x == 1f) {
+					fenceRotation = -1;
+					return;
+				}
+			}
 			this.isOnFence = false;
 			this.currentDir = Vector3.left;
 			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
@@ -49,7 +99,13 @@ public class Fox : MonoBehaviour {
 
 		if (this.isOnFence) {
 			this.transform.position = this.fence.FencePosToWorldPos(this.fencePos);
-			this.fencePos += this.speed * Time.deltaTime;
+			this.fencePos += this.fenceRotation * this.speed * Time.deltaTime;
+			while (this.fencePos >= this.fence.totalLength) {
+				this.fencePos -= this.fence.totalLength;
+			}
+			while (this.fencePos < 0f) {
+				this.fencePos += this.fence.totalLength;
+			}
 		} else {
 			Vector3 previousPos = this.transform.position;
 			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
