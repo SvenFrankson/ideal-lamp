@@ -49,9 +49,29 @@ public class Fence : MonoBehaviour {
 
 	public void Split(int indexStart, int indexEnd, List<Vector3> pathCut) {
 		if (indexStart < indexEnd) {
-			this.path = this.path.GetRange(indexStart + 1, indexEnd - indexStart);
-			for (int i = pathCut.Count - 1; i >= 0; i--) {
-				this.path.Add(pathCut[i]);
+			if (indexEnd - indexStart > this.path.Count / 2) {
+				Debug.Log("Split case 10 (Forward)");
+				this.path = this.path.GetRange(indexStart + 1, indexEnd - indexStart);
+				for (int i = pathCut.Count - 1; i >= 0; i--) {
+					this.path.Add(pathCut[i]);
+				}
+			} else {
+				Debug.Log("Split case 11 (Forward inverted)");
+				this.path.RemoveRange(indexStart + 1, indexEnd - indexStart);
+				this.path.InsertRange(indexStart + 1, pathCut);
+			}
+		}
+		else if (indexStart > indexEnd) {
+				Debug.Log("Split case 20 (Backward)");
+			if (indexStart - indexEnd > this.path.Count / 2) {
+				this.path = this.path.GetRange(indexEnd + 1, indexStart - indexEnd);
+				for (int i = 0; i < pathCut.Count; i++) {
+					this.path.Add(pathCut[i]);
+				}
+			} else {
+				Debug.Log("Split case 21 (Backward inverted)");
+				this.path.RemoveRange(indexEnd + 1, indexStart - indexEnd);
+				this.path.InsertRange(indexEnd + 1, pathCut);
 			}
 		}
 		this.UpdateLength();
@@ -80,6 +100,10 @@ public class Fence : MonoBehaviour {
 			);
 			fencePart.transform.parent = this.nodesContainer;
 		}
+		GameObject zero = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+		zero.transform.position = this.path[0] + Vector3.up * 0.5f;
+		zero.transform.localScale = Vector3.one * 0.2f;
+		zero.transform.parent = this.nodesContainer;
 	}
 
 	public void ClearMesh() {
