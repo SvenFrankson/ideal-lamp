@@ -143,8 +143,8 @@ public class Fox : MonoBehaviour {
 				this.isOnFence = true;
 				this.foxCut.Add(fenceIntersection.GetValueOrDefault());
 				this.cutIndexEnd = intersectionIndex;
-				this.fence.Split(this.cutIndexStart, this.cutIndexEnd, this.foxCut);
-				this.fencePos = 0f;
+				intersectionIndex = this.fence.Split(this.cutIndexStart, this.cutIndexEnd, this.foxCut, ref this.fenceRotation);
+				this.fencePos = this.fence.WorldPosAndIndexToFencePos(this.transform.position, intersectionIndex);
 				Debug.Log("FoxCut is made of " + this.foxCut.Count + " steps.");
 			}
 		}

@@ -47,35 +47,47 @@ public class Fence : MonoBehaviour {
 		}
 	}
 
-	public void Split(int indexStart, int indexEnd, List<Vector3> pathCut) {
+	public int Split(int indexStart, int indexEnd, List<Vector3> pathCut, ref int fenceRotation) {
 		if (indexStart < indexEnd) {
 			if (indexEnd - indexStart > this.path.Count / 2) {
+				fenceRotation = -1;
 				Debug.Log("Split case 10 (Forward)");
 				this.path = this.path.GetRange(indexStart + 1, indexEnd - indexStart);
 				for (int i = pathCut.Count - 1; i >= 0; i--) {
 					this.path.Add(pathCut[i]);
 				}
 			} else {
+				fenceRotation = 1;
 				Debug.Log("Split case 11 (Forward inverted)");
 				this.path.RemoveRange(indexStart + 1, indexEnd - indexStart);
 				this.path.InsertRange(indexStart + 1, pathCut);
 			}
 		}
 		else if (indexStart > indexEnd) {
-				Debug.Log("Split case 20 (Backward)");
 			if (indexStart - indexEnd > this.path.Count / 2) {
+				fenceRotation = 1;
+				Debug.Log("Split case 20 (Backward)");
 				this.path = this.path.GetRange(indexEnd + 1, indexStart - indexEnd);
 				for (int i = 0; i < pathCut.Count; i++) {
 					this.path.Add(pathCut[i]);
 				}
 			} else {
+				fenceRotation = -1;
 				Debug.Log("Split case 21 (Backward inverted)");
+				List<Vector3> invertedPathCut = new List<Vector3>();
+				for (int i = pathCut.Count - 1; i >= 0; i--) {
+					invertedPathCut.Add(pathCut[i]);
+				}
 				this.path.RemoveRange(indexEnd + 1, indexStart - indexEnd);
-				this.path.InsertRange(indexEnd + 1, pathCut);
+				this.path.InsertRange(indexEnd + 1, invertedPathCut);
 			}
+		}
+		else {
+			return indexStart;
 		}
 		this.UpdateLength();
 		this.UpdateMesh();
+		return this.path.IndexOf(pathCut[pathCut.Count - 1]);
 	}
 
 	public void UpdateMesh() {
