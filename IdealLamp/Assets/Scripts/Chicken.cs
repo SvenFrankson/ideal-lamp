@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hen : MonoBehaviour {
+public class Chicken : MonoBehaviour {
 
-	public static List<Hen> instances = new List<Hen>();
+	public static List<Chicken> instances = new List<Chicken>();
 
 	private Fence _fence;
 	public Fence fence {
@@ -20,7 +20,7 @@ public class Hen : MonoBehaviour {
     private Vector3 destination;
 
 	public void Start() {
-		Hen.instances.Add(this);
+		Chicken.instances.Add(this);
 	}
 
 	public void Update() {
@@ -29,5 +29,9 @@ public class Hen : MonoBehaviour {
         }
         Vector3 dir = (destination - this.transform.position).normalized;
         this.transform.position += dir * this.speed * Time.deltaTime;
+	}
+
+	public void OnDestroy() {
+		Chicken.instances.Remove(this);
 	}
 }

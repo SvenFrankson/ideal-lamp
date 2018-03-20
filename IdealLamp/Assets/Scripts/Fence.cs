@@ -86,8 +86,20 @@ public class Fence : MonoBehaviour {
 			return indexStart;
 		}
 		this.UpdateLength();
+		this.CheckChickens();
 		this.UpdateMesh();
 		return this.path.IndexOf(pathCut[pathCut.Count - 1]);
+	}
+
+	public void CheckChickens() {
+		Chicken.instances.ForEach(
+			(h) => {
+				if (!this.IsInside(h.transform.position)) {
+					Destroy(h.gameObject);
+					Debug.Log("Success ! One Chicken caught !");
+				}
+			}
+		);
 	}
 
 	public void UpdateMesh() {
