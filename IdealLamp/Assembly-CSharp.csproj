@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Chicken.cs" />
+     <Compile Include="Assets\Scripts\Dog.cs" />
      <Compile Include="Assets\Scripts\Fence.cs" />
      <Compile Include="Assets\Scripts\Fox.cs" />
      <Compile Include="Assets\Scripts\Math\SegmentMath.cs" />

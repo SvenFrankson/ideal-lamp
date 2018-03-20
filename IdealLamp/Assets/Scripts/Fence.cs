@@ -46,6 +46,15 @@ public class Fence : MonoBehaviour {
 			this.totalLength += Vector3.Distance(A, B);
 		}
 	}
+	
+	public Vector3 NormalAt(int index) {
+		Vector3 A = this.path[index];
+		Vector3 B = this.path[(index + 1) % this.path.Count];
+
+		Vector3 normal = Quaternion.AngleAxis(-90, Vector3.up) * (B - A).normalized;
+
+		return normal;
+	}
 
 	public int Split(int indexStart, int indexEnd, List<Vector3> pathCut, ref int fenceRotation) {
 		if (indexStart < indexEnd) {
