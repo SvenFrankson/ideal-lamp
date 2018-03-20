@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Hen : MonoBehaviour {
 
+	public static List<Hen> instances = new List<Hen>();
+
 	private Fence _fence;
 	public Fence fence {
 		get {
@@ -15,8 +17,12 @@ public class Hen : MonoBehaviour {
 	}
 
     public float speed;
-
     private Vector3 destination;
+
+	public void Start() {
+		Hen.instances.Add(this);
+	}
+
 	public void Update() {
         if (Vector3.Distance(this.transform.position, destination) < this.speed * Time.deltaTime) {
             this.destination = this.fence.RandomInsidePosition();

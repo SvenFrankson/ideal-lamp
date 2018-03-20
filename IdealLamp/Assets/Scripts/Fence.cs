@@ -173,52 +173,11 @@ public class Fence : MonoBehaviour {
 		Vector3 fenceA = this.path[index];
 		Vector3 fenceB = this.path[(index + 1) % this.path.Count];
 
-        float x1 = A.x;
-        float y1 = A.z;
-        float x2 = B.x;
-        float y2 = B.z;
-        float x3 = fenceA.x;
-        float y3 = fenceA.z;
-        float x4 = fenceB.x;
-        float y4 = fenceB.z;
-
-        float det = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-
-		if (det == 0) {
-			return null;
-		}
-		
-		float x = (x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4);
-		x = x / det;
-		float y = (x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4);
-		y = y / det;
-		Vector3 I = new Vector3(x, 0, y);
-
-		if (Vector3.Dot(B - I, B - A) < 0f) {
-			return null;
-		}
-		if (Vector3.Dot(A - I, A - B) < 0f) {
-			return null;
-		}
-		if (Vector3.Dot(fenceB - I, fenceB - fenceA) < 0f) {
-			return null;
-		}
-		if (Vector3.Dot(fenceA - I, fenceA - fenceB) < 0f) {
-			return null;
-		}
-
-        return I;
+        return SegmentMath.SegmentSegmentIntersection(A, B, fenceA, fenceB);
 	}
 
 	public bool IsInside(Vector3 p) {
-		int count = 0;
-		for (int i = 0; i < this.path.Count; i++) {
-			Vector3? intersection = this.SegmentIntersectionIndex(p, new Vector3(42, 0, 42), i);
-			if (intersection != null) {
-				count++;
-			}
-		}
-		return (count % 2 == 1);
+		return SegmentMath.IsInsidePath(p, this.path);
 	}
 
 	public Vector3 RandomInsidePosition() {
@@ -237,7 +196,7 @@ public class Fence : MonoBehaviour {
 		int max = 0;
 		bool inside = false;
 		Vector3 random = Vector3.zero;
-		while (max < 10 && !inside) {
+		while (max < 100 && !inside) {
 			max++;
 			random = new Vector3(
 				Random.Range(minX, maxX),
@@ -245,6 +204,7 @@ public class Fence : MonoBehaviour {
 				Random.Range(minZ, maxZ)
 			);
 			if (this.IsInside(random)) {
+				Debug.Log("Ok, its inside");
 				inside = true;
 			}
 		}
