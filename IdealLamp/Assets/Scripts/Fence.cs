@@ -133,10 +133,6 @@ public class Fence : MonoBehaviour {
 			);
 			fencePart.transform.parent = this.nodesContainer;
 		}
-		GameObject zero = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-		zero.transform.position = this.path[0] + Vector3.up * 0.5f;
-		zero.transform.localScale = Vector3.one * 0.2f;
-		zero.transform.parent = this.nodesContainer;
 	}
 
 	public void ClearMesh() {
