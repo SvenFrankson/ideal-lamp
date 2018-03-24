@@ -47,6 +47,13 @@ public class Fence : MonoBehaviour {
 		}
 	}
 	
+	public Vector3 DirAt(int index) {
+		Vector3 A = this.path[index];
+		Vector3 B = this.path[(index + 1) % this.path.Count];
+
+		return (B - A).normalized;
+	}
+	
 	public Vector3 NormalAt(int index) {
 		Vector3 A = this.path[index];
 		Vector3 B = this.path[(index + 1) % this.path.Count];
