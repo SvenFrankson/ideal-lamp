@@ -28,8 +28,9 @@ public class Dog : MonoBehaviour {
         int intersectionIndex;
         Vector3? fenceIntersection = this.fence.SegmentIntersection(previousPos, this.transform.position, out intersectionIndex);
         if (fenceIntersection != null) {
+			Vector3 fenceDir = this.fence.DirAt(intersectionIndex);
             Vector3 fenceNormal = this.fence.NormalAt(intersectionIndex);
-            Vector3 newForward = Quaternion.AngleAxis(Vector3.Angle(this.transform.forward, fenceNormal) * 2f, Vector3.up) * - this.transform.forward;
+            Vector3 newForward = - Vector3.Dot(this.transform.forward, fenceNormal) * fenceNormal + Vector3.Dot(this.transform.forward, fenceDir) * fenceDir;
             this.transform.position = fenceIntersection.GetValueOrDefault() + fenceNormal * 0.05f;
             this.transform.rotation = Quaternion.LookRotation(newForward, Vector3.up);
         }
