@@ -16,6 +16,16 @@ public class Dog : MonoBehaviour {
 		}
 	}
 
+	private Fox _fox;
+	public Fox fox {
+		get {
+			if (!this._fox) {
+				this._fox = FindObjectOfType<Fox>();
+			}
+			return this._fox;
+		}
+	}
+
     public float speed;
 
 	public void Start() {
@@ -33,6 +43,10 @@ public class Dog : MonoBehaviour {
             Vector3 newForward = - Vector3.Dot(this.transform.forward, fenceNormal) * fenceNormal + Vector3.Dot(this.transform.forward, fenceDir) * fenceDir;
             this.transform.position = fenceIntersection.GetValueOrDefault() + fenceNormal * 0.05f;
             this.transform.rotation = Quaternion.LookRotation(newForward, Vector3.up);
+        }
+        Vector3? foxIntersection = SegmentMath.SegmentPathIntersection(previousPos, this.transform.position, this.fox.GetPath());
+        if (foxIntersection != null) {
+			Debug.LogWarning("You've hit by ! You've been struck by ! A smooth dog.");
         }
 	}
 

@@ -16,8 +16,12 @@ class SegmentMath {
 		return (count % 2 == 1);
 	}
 
-    public static Vector3? SegmentPathIntersection(Vector3 A, Vector3 B, List<Vector3> path) {
-        for (int i = 0; i < path.Count; i++) {
+    public static Vector3? SegmentPathIntersection(Vector3 A, Vector3 B, List<Vector3> path, bool closePath = true) {
+		int iMax = path.Count - 1;
+		if (closePath) {
+			iMax += 1;
+		}
+        for (int i = 0; i < iMax; i++) {
 		    Vector3 C = path[i];
 		    Vector3 D = path[(i + 1) % path.Count];
 			Vector3? intersection = SegmentMath.SegmentSegmentIntersection(A, B, C, D);

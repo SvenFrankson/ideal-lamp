@@ -38,7 +38,18 @@ public class Fox : MonoBehaviour {
 
 	public Vector3 FenceDirection() {
 		int nodeIndex = this.fence.FencePosToNodeIndex(this.fencePos);
-		return (this.fence.path[(nodeIndex + 1) % this.fence.path.Count] - this.fence.path[nodeIndex]).normalized;
+		return this.fence.DirAt(nodeIndex);
+	}
+
+	public List<Vector3> GetPath() {
+		if (this.foxCut.Count == 0) {
+			return new List<Vector3>();
+		}
+		else {
+			List<Vector3> path = new List<Vector3>(this.foxCut);
+			path.Add(this.transform.position);
+			return path;
+		}
 	}
 
 	public void Update() {
