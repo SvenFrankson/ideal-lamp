@@ -17,6 +17,9 @@ public class Fence : MonoBehaviour {
 	public List<float> sumLength;
 	public float totalLength;
 
+	public bool killOutedDogs = true;
+	public bool killOutedChickens = true;
+
 	public void Start() {
 		this.InitializePath();
 		this.UpdateMesh();
@@ -102,17 +105,33 @@ public class Fence : MonoBehaviour {
 			return indexStart;
 		}
 		this.UpdateLength();
-		this.CheckChickens();
+		if (this.killOutedChickens) {
+			this.CheckChickens();
+		}
+		if (this.killOutedDogs) {
+			this.CheckDogs();
+		}
 		this.UpdateMesh();
 		return this.path.IndexOf(pathCut[pathCut.Count - 1]);
 	}
 
 	public void CheckChickens() {
 		Chicken.instances.ForEach(
-			(h) => {
-				if (!this.IsInside(h.transform.position)) {
-					Destroy(h.gameObject);
-					Debug.Log("Success ! One Chicken caught !");
+			(c) => {
+				if (!this.IsInside(c.transform.position)) {
+					Destroy(c.gameObject);
+					Debug.Log("Success ! One Chicken out !");
+				}
+			}
+		);
+	}
+
+	public void CheckDogs() {
+		Dog.instances.ForEach(
+			(d) => {
+				if (!this.IsInside(d.transform.position)) {
+					Destroy(d.gameObject);
+					Debug.Log("Success ! One Dog out !");
 				}
 			}
 		);
