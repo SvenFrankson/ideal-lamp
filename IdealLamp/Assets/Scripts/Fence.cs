@@ -20,6 +20,19 @@ public class Fence : MonoBehaviour {
 	public bool killOutedDogs = true;
 	public bool killOutedChickens = true;
 
+	private Vector3 _min = Vector3.zero;
+	public Vector3 min {
+		get {
+			return this._min;
+		}
+	}
+	private Vector3 _max = Vector3.zero;
+	public Vector3 max {
+		get {
+			return this._max;
+		}
+	}
+
 	public void Start() {
 		this.InitializePath();
 		this.UpdateMesh();
@@ -36,7 +49,17 @@ public class Fence : MonoBehaviour {
 	public void UpdateLength() {
 		this.sumLength = new List<float>();
 		this.totalLength = 0f;
+		
+		float minX = float.MaxValue;
+		float maxX = float.MinValue;
+		float minZ = float.MaxValue;
+		float maxZ = float.MinValue;
+
 		for (int i = 0; i < this.path.Count; i++) {
+			minX = Mathf.Min(minX, this.path[i].x);
+			maxX = Mathf.Max(maxX, this.path[i].x);
+			minZ = Mathf.Min(minZ, this.path[i].z);
+			maxZ = Mathf.Max(maxZ, this.path[i].z);
 			if (i > 0) {
 				this.sumLength.Add(
 					this.sumLength[i - 1] + Vector3.Distance(this.path[i], this.path[i - 1])
@@ -48,6 +71,9 @@ public class Fence : MonoBehaviour {
 			Vector3 B = this.path[(i + 1) % this.path.Count];
 			this.totalLength += Vector3.Distance(A, B);
 		}
+		
+		this._min = new Vector3(minX, 0, minZ);
+		this._max = new Vector3(maxX, 0, maxZ);
 	}
 	
 	public Vector3 DirAt(int index) {
