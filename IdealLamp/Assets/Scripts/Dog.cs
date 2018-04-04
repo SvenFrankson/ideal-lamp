@@ -47,6 +47,7 @@ public class Dog : MonoBehaviour {
         Vector3? foxIntersection = SegmentMath.SegmentPathIntersection(previousPos, this.transform.position, this.fox.GetPath());
         if (foxIntersection != null) {
 			Debug.LogWarning("You've hit by ! You've been struck by ! A smooth dog.");
+			this.fox.isAlive = false;
         }
 	}
 
