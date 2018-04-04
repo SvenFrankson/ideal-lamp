@@ -185,9 +185,7 @@ public class Fox : MonoBehaviour {
 		if (this.foxCut.Count == 0) {
 			return;
 		}
-		List<Vector3> path = new List<Vector3>();
-		path.AddRange(this.foxCut);
-		path.Add(this.transform.position);
+		List<Vector3> path = this.GetPath();
 		for (int i = 0; i < path.Count - 1; i++) {
 			Vector3 A = path[i];
 			Vector3 B = path[i + 1];
