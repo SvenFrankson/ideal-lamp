@@ -448,6 +448,8 @@ GameObject:
   - component: {fileID: 640455064}
   - component: {fileID: 640455063}
   - component: {fileID: 640455067}
+  - component: {fileID: 640455068}
+  - component: {fileID: 640455069}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -531,6 +533,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   smoothness: 10
   edgeSize: 1
+--- !u!114 &640455068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 640455062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c89c8ac353e2a2440984a4d373f39bc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &640455069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 640455062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d4175d42b6ac64cb8d2929a1876c0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fence: {fileID: 2100000, guid: 051c97c196d69f24da61c3650ba0d93a, type: 2}
+  destroyedFence: {fileID: 2100000, guid: 6ed39c76933d8794096ae246b05f6082, type: 2}
 --- !u!1001 &729957673
 Prefab:
   m_ObjectHideFlags: 0
@@ -733,6 +759,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6824d32f39938214fb4650b319801da3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAlive: 1
   isOnFence: 1
   fenceRotation: 1
   fencePos: 0
