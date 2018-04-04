@@ -188,9 +188,9 @@ public class Fox : MonoBehaviour {
 		List<Vector3> path = new List<Vector3>();
 		path.AddRange(this.foxCut);
 		path.Add(this.transform.position);
-		for (int i = 0; i < path.Count; i++) {
+		for (int i = 0; i < path.Count - 1; i++) {
 			Vector3 A = path[i];
-			Vector3 B = path[(i + 1) % path.Count];
+			Vector3 B = path[i + 1];
 			GameObject fencePart = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			fencePart.transform.position = (B + A) * 0.5f;
 			fencePart.transform.rotation = Quaternion.FromToRotation(
