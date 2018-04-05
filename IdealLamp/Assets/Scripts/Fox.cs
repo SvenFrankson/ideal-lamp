@@ -55,128 +55,162 @@ public class Fox : MonoBehaviour {
 
 	public void Update() {
 		if (this.isAlive) {
-			if (this.isAlive && (this.canMoveFree || this.isOnFence)) {
-				if (Input.GetKeyDown(KeyCode.UpArrow)) {
-					if (this.isOnFence) {
-						Vector3 fenceDirection = this.FenceDirection();
-						if (fenceDirection.z == 1f) {
-							fenceRotation = 1;
-							return;
-						}
-						if (fenceDirection.z == -1f) {
-							fenceRotation = -1;
-							return;
-						}
-						if (fenceDirection.x == -1f) {
-							return;
-						}
-						this.foxCut = new List<Vector3>();
-						this.cutIndexStart = this.fence.FencePosToNodeIndex(this.fencePos);
-					}
-					this.isOnFence = false;
-					this.foxCut.Add(this.transform.position);
-					this.currentDir = Vector3.forward;
-					this.transform.position += this.currentDir * this.speed * Time.deltaTime;
-					return;
-				}
-				if (Input.GetKeyDown(KeyCode.DownArrow)) {
-					if (this.isOnFence) {
-						Vector3 fenceDirection = this.FenceDirection();
-						if (fenceDirection.z == -1f) {
-							fenceRotation = 1;
-							return;
-						}
-						if (fenceDirection.z == 1f) {
-							fenceRotation = -1;
-							return;
-						}
-						if (fenceDirection.x == 1f) {
-							return;
-						}
-						this.foxCut = new List<Vector3>();
-						this.cutIndexStart = this.fence.FencePosToNodeIndex(this.fencePos);
-					}
-					this.isOnFence = false;
-					this.foxCut.Add(this.transform.position);
-					this.currentDir = Vector3.back;
-					this.transform.position += this.currentDir * this.speed * Time.deltaTime;
-					return;
-				}
-				if (Input.GetKeyDown(KeyCode.RightArrow)) {
-					if (this.isOnFence) {
-						Vector3 fenceDirection = this.FenceDirection();
-						if (fenceDirection.x == 1f) {
-							fenceRotation = 1;
-							return;
-						}
-						if (fenceDirection.x == -1f) {
-							fenceRotation = -1;
-							return;
-						}
-						if (fenceDirection.z == 1f) {
-							return;
-						}
-						this.foxCut = new List<Vector3>();
-						this.cutIndexStart = this.fence.FencePosToNodeIndex(this.fencePos);
-					}
-					this.isOnFence = false;
-					this.foxCut.Add(this.transform.position);
-					this.currentDir = Vector3.right;
-					this.transform.position += this.currentDir * this.speed * Time.deltaTime;
-					return;
-				}
-				if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-					if (this.isOnFence) {
-						Vector3 fenceDirection = this.FenceDirection();
-						if (fenceDirection.x == -1f) {
-							fenceRotation = 1;
-							return;
-						}
-						if (fenceDirection.x == 1f) {
-							fenceRotation = -1;
-							return;
-						}
-						if (fenceDirection.z == -1f) {
-							return;
-						}
-						this.foxCut = new List<Vector3>();
-						this.cutIndexStart = this.fence.FencePosToNodeIndex(this.fencePos);
-					}
-					this.isOnFence = false;
-					this.foxCut.Add(this.transform.position);
-					this.currentDir = Vector3.left;
-					this.transform.position += this.currentDir * this.speed * Time.deltaTime;
-					return;
-				}
-			}
-
 			if (this.isOnFence) {
-				this.transform.position = this.fence.FencePosToWorldPos(this.fencePos);
-				this.fencePos += this.fenceRotation * this.speed * Time.deltaTime;
-				while (this.fencePos >= this.fence.totalLength) {
-					this.fencePos -= this.fence.totalLength;
-				}
-				while (this.fencePos < 0f) {
-					this.fencePos += this.fence.totalLength;
-				}
-			} else {
-				Vector3 previousPos = this.transform.position;
-				this.transform.position += this.currentDir * this.speed * Time.deltaTime;
-				int intersectionIndex;
-				Vector3? fenceIntersection = this.fence.SegmentIntersection(previousPos, this.transform.position, out intersectionIndex);
-				if (fenceIntersection != null) {
-					Debug.Log("Fox joins fence at index '" + intersectionIndex + "'");
-					this.isOnFence = true;
-					this.foxCut.Add(fenceIntersection.GetValueOrDefault());
-					this.cutIndexEnd = intersectionIndex;
-					intersectionIndex = this.fence.Split(this.cutIndexStart, this.cutIndexEnd, this.foxCut, ref this.fenceRotation);
-					this.fencePos = this.fence.WorldPosAndIndexToFencePos(this.transform.position, intersectionIndex);
-					this.foxCut = new List<Vector3>();
-					Debug.Log("FoxCut is made of " + this.foxCut.Count + " steps.");
-				}
+				this._onFenceUpdate();
+			}
+			else {
+				this._inFieldUpdate();
 			}
 		}
 		this.UpdateMesh();
+	}
+
+	private void _onFenceUpdate() {
+		if (Input.GetKeyDown(KeyCode.UpArrow)) {
+			Vector3 fenceDirection = this.FenceDirection();
+			if (fenceDirection.z == 1f) {
+				fenceRotation = 1;
+				return;
+			}
+			if (fenceDirection.z == -1f) {
+				fenceRotation = -1;
+				return;
+			}
+			if (fenceDirection.x == -1f) {
+				return;
+			}
+			this.foxCut = new List<Vector3>();
+			this.cutIndexStart = this.fence.FencePosToNodeIndex(this.fencePos);
+			this.isOnFence = false;
+			this.foxCut.Add(this.transform.position);
+			this.currentDir = Vector3.forward;
+			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
+			return;
+		}
+		if (Input.GetKeyDown(KeyCode.DownArrow)) {
+			Vector3 fenceDirection = this.FenceDirection();
+			if (fenceDirection.z == -1f) {
+				fenceRotation = 1;
+				return;
+			}
+			if (fenceDirection.z == 1f) {
+				fenceRotation = -1;
+				return;
+			}
+			if (fenceDirection.x == 1f) {
+				return;
+			}
+			this.foxCut = new List<Vector3>();
+			this.cutIndexStart = this.fence.FencePosToNodeIndex(this.fencePos);
+			this.isOnFence = false;
+			this.foxCut.Add(this.transform.position);
+			this.currentDir = Vector3.back;
+			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
+			return;
+		}
+		if (Input.GetKeyDown(KeyCode.RightArrow)) {
+			Vector3 fenceDirection = this.FenceDirection();
+			if (fenceDirection.x == 1f) {
+				fenceRotation = 1;
+				return;
+			}
+			if (fenceDirection.x == -1f) {
+				fenceRotation = -1;
+				return;
+			}
+			if (fenceDirection.z == 1f) {
+				return;
+			}
+			this.foxCut = new List<Vector3>();
+			this.cutIndexStart = this.fence.FencePosToNodeIndex(this.fencePos);
+			this.isOnFence = false;
+			this.foxCut.Add(this.transform.position);
+			this.currentDir = Vector3.right;
+			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
+			return;
+		}
+		if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+			Vector3 fenceDirection = this.FenceDirection();
+			if (fenceDirection.x == -1f) {
+				fenceRotation = 1;
+				return;
+			}
+			if (fenceDirection.x == 1f) {
+				fenceRotation = -1;
+				return;
+			}
+			if (fenceDirection.z == -1f) {
+				return;
+			}
+			this.foxCut = new List<Vector3>();
+			this.cutIndexStart = this.fence.FencePosToNodeIndex(this.fencePos);
+			this.isOnFence = false;
+			this.foxCut.Add(this.transform.position);
+			this.currentDir = Vector3.left;
+			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
+			return;
+		}
+		this.transform.position = this.fence.FencePosToWorldPos(this.fencePos);
+		this.fencePos += this.fenceRotation * this.speed * Time.deltaTime;
+		while (this.fencePos >= this.fence.totalLength) {
+			this.fencePos -= this.fence.totalLength;
+		}
+		while (this.fencePos < 0f) {
+			this.fencePos += this.fence.totalLength;
+		}
+	}
+
+	private void _inFieldUpdate() {
+		if (Input.GetKeyDown(KeyCode.UpArrow)) {
+			if (this.currentDir.x == 0f) {
+				return;
+			}
+			this.foxCut.Add(this.transform.position);
+			this.currentDir = Vector3.forward;
+			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
+			return;
+		}
+		if (Input.GetKeyDown(KeyCode.DownArrow)) {
+			if (this.currentDir.x == 0f) {
+				return;
+			}
+			this.foxCut.Add(this.transform.position);
+			this.currentDir = Vector3.back;
+			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
+			return;
+		}
+		if (Input.GetKeyDown(KeyCode.RightArrow)) {
+			if (this.currentDir.z == 0f) {
+				return;
+			}
+			this.foxCut.Add(this.transform.position);
+			this.currentDir = Vector3.right;
+			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
+			return;
+		}
+		if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+			if (this.currentDir.z == 0f) {
+				return;
+			}
+			this.foxCut.Add(this.transform.position);
+			this.currentDir = Vector3.left;
+			this.transform.position += this.currentDir * this.speed * Time.deltaTime;
+			return;
+		}
+		Vector3 previousPos = this.transform.position;
+		this.transform.position += this.currentDir * this.speed * Time.deltaTime;
+		int intersectionIndex;
+		Vector3? fenceIntersection = this.fence.SegmentIntersection(previousPos, this.transform.position, out intersectionIndex);
+		if (fenceIntersection != null) {
+			Debug.Log("Fox joins fence at index '" + intersectionIndex + "'");
+			this.isOnFence = true;
+			this.foxCut.Add(fenceIntersection.GetValueOrDefault());
+			this.cutIndexEnd = intersectionIndex;
+			intersectionIndex = this.fence.Split(this.cutIndexStart, this.cutIndexEnd, this.foxCut, ref this.fenceRotation);
+			this.fencePos = this.fence.WorldPosAndIndexToFencePos(this.transform.position, intersectionIndex);
+			this.foxCut = new List<Vector3>();
+			Debug.Log("FoxCut is made of " + this.foxCut.Count + " steps.");
+		}
 	}
 
 	public void UpdateMesh() {
