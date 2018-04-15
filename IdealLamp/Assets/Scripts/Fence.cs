@@ -263,7 +263,7 @@ public class Fence : MonoBehaviour {
 		return SegmentMath.IsInsidePath(p, this.path);
 	}
 
-	public Vector3 RandomInsidePosition() {
+	public Vector3 RandomInsidePosition(Vector3? rMin = null, Vector3? rMax = null) {
 		float minX = float.MaxValue;
 		float maxX = float.MinValue;
 		float minZ = float.MaxValue;
@@ -274,6 +274,15 @@ public class Fence : MonoBehaviour {
 			maxX = Mathf.Max(maxX, this.path[i].x);
 			minZ = Mathf.Min(minZ, this.path[i].z);
 			maxZ = Mathf.Max(maxZ, this.path[i].z);
+		}
+
+		if (rMin != null) {
+			minX = Mathf.Max(rMin.GetValueOrDefault().x);
+			minZ = Mathf.Max(rMin.GetValueOrDefault().z);
+		}
+		if (rMax != null) {
+			maxX = Mathf.Min(rMax.GetValueOrDefault().x);
+			maxZ = Mathf.Min(rMax.GetValueOrDefault().z);
 		}
 
 		int max = 0;
