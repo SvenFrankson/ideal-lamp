@@ -127,6 +127,20 @@ public class Fence : MonoBehaviour {
 				this.path.InsertRange(indexEnd + 1, invertedPathCut);
 			}
 		}
+		else if (indexStart == indexEnd) {
+			if (Vector3.Distance(pathCut[0], this.path[indexStart]) < Vector3.Distance(pathCut[pathCut.Count - 1], this.path[indexStart])) {
+				Debug.Log("Split case 00 (Same segment)");
+				this.path.InsertRange(indexStart + 1, pathCut);
+			} else {
+				fenceRotation = -1;
+				Debug.Log("Split case 01 (Same segment Inverted)");
+				List<Vector3> invertedPathCut = new List<Vector3>();
+				for (int i = pathCut.Count - 1; i >= 0; i--) {
+					invertedPathCut.Add(pathCut[i]);
+				}
+				this.path.InsertRange(indexStart + 1, invertedPathCut);
+			}
+		}
 		else {
 			return indexStart;
 		}

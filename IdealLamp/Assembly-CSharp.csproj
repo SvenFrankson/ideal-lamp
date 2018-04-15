@@ -60,6 +60,7 @@
      <Compile Include="Assets\Scripts\Math\SegmentMath.cs" />
      <Compile Include="Assets\Scripts\TestMaterials.cs" />
      <None Include="Assets\Blends\LICENCE.txt" />
+     <None Include="Assets\Graphics\LICENCE.txt" />
  <Reference Include="Facebook.Unity.Settings">
  <HintPath>C:/Users/Sven/Documents/SvenFrankson/ideal-lamp/IdealLamp/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
  </Reference>
