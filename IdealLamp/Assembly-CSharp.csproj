@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\Dog.cs" />
      <Compile Include="Assets\Scripts\Fence.cs" />
      <Compile Include="Assets\Scripts\Fox.cs" />
+     <Compile Include="Assets\Scripts\Ground.cs" />
      <Compile Include="Assets\Scripts\GUI.cs" />
      <Compile Include="Assets\Scripts\Math\SegmentMath.cs" />
      <Compile Include="Assets\Scripts\TestMaterials.cs" />
