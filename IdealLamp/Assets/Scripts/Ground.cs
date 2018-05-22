@@ -4,26 +4,12 @@ using UnityEngine;
 
 public class Ground : MonoBehaviour {
 
-	public int[][] grid;
-	private int width;
-	private int height;
+	public int[] grid;
+	public int width;
+	public int height;
 
 	void Start () {
-		this.width = Mathf.FloorToInt(this.transform.localScale.x);
-		this.height = Mathf.FloorToInt(this.transform.localScale.z);
-
-		grid = new int[width][];
-		for (int i = 0; i < width; i++) {
-			grid[i] = new int[height];
-			for (int j = 0; j < width; j++) {
-				grid[i][j] = Random.Range(0, 2);
-			}
-		}
-
-		this.transform.localPosition = new Vector3(- this.width / 2, 0, - this.height / 2);
-		this.transform.localScale = Vector3.one;
-
-		this.GetComponent<MeshFilter>().mesh = this.CreateMesh();
+		
 	}
 
 	public Vector2[] uvsForABCD(int a, int b, int c, int d) {
@@ -79,6 +65,43 @@ public class Ground : MonoBehaviour {
         }
         return new Vector2[] { new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0) };
     }
+
+	public Vector2 WorldPointToGrid(Vector3 world) {
+		int i = Mathf.RoundToInt(world.x);
+		int j = Mathf.RoundToInt(world.z);
+		if (i >= 0 && i < this.width) {
+			if (j >= 0 && j < this.height) {
+				return new Vector2(i, j);
+			}
+		}
+		return new Vector2(-1, -1);
+	}
+
+	public void UpdateGrid() {
+		int[] newGrid = new int[this.width * this.height];
+		for (int i = 0; i < this.width; i++) {
+			for (int j = 0; j < this.height; j++) {
+				newGrid[i + j * this.width] = 0;
+			}
+		}
+
+		if (this.grid != null) {
+			for (int i = 0; i < this.width; i++) {
+				for (int j = 0; j < this.height; j++) {
+					if (i + j * this.width < this.grid.Length) {
+						newGrid[i + j * this.width] = grid[i + j * this.width];
+					}
+				}
+			}
+		}
+
+		this.grid = newGrid;
+	}
+	
+	public void UpdateMesh() {
+		this.UpdateGrid();
+		this.GetComponent<MeshFilter>().sharedMesh = this.CreateMesh();
+	}
 	
 	public Mesh CreateMesh() {
 		Mesh mesh = new Mesh();
@@ -101,7 +124,7 @@ public class Ground : MonoBehaviour {
 				triangles.Add(l + 2);
 				triangles.Add(l + 3);
 
-				Vector2[] rawUvs = this.uvsForABCD(this.grid[i][j + 1], this.grid[i + 1][j + 1], this.grid[i + 1][j], this.grid[i][j]);
+				Vector2[] rawUvs = this.uvsForABCD(this.grid[i + (j + 1) * this.width], this.grid[i + 1 + (j + 1) * this.width], this.grid[i + 1 + j * this.width], this.grid[i + j * this.width]);
 				//rawUvs[0] += new Vector2(0.01f, 0.01f);
 				//rawUvs[1] += new Vector2(0.01f, - 0.01f);
 				//rawUvs[2] += new Vector2(- 0.01f, - 0.01f);
