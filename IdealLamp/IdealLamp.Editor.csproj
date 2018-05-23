@@ -5,17 +5,17 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{03FA89AB-BE29-F2FC-3B62-4A7F4F62AB13}</ProjectGuid>
+    <ProjectGuid>{EDFEB4DD-3A6B-5504-DA25-47D41D0E455F}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
     <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
-    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityProjectType>Editor:5</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.1f1</UnityVersion>
     <RootNamespace></RootNamespace>
@@ -283,15 +283,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\CamControl.cs" />
-    <Compile Include="Assets\Scripts\Chicken.cs" />
-    <Compile Include="Assets\Scripts\Dog.cs" />
-    <Compile Include="Assets\Scripts\Fence.cs" />
-    <Compile Include="Assets\Scripts\Fox.cs" />
-    <Compile Include="Assets\Scripts\Ground.cs" />
-    <Compile Include="Assets\Scripts\GUI.cs" />
-    <Compile Include="Assets\Scripts\Math\SegmentMath.cs" />
-    <Compile Include="Assets\Scripts\TestMaterials.cs" />
+    <ProjectReference Include="IdealLamp.csproj">
+      <Project>{03FA89AB-BE29-F2FC-3B62-4A7F4F62AB13}</Project>
+      <Name>IdealLamp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Scripts\Editor\GroundEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Blends\LICENCE.txt" />
