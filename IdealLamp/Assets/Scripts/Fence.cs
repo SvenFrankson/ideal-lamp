@@ -175,8 +175,9 @@ public class Fence : MonoBehaviour {
 	}
 
 	public void UpdateMesh() {
-		this.ClearMesh();
-		this.CreateMesh();
+		//this.ClearMesh();
+		//this.CreateMesh();
+		this.GetComponent<MeshFilter>().mesh = FenceBuilder.FenceMeshFromPath(this.path);
 	}
 
 	public void CreateMesh() {
