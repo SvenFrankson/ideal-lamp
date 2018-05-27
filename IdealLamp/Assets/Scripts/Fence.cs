@@ -39,10 +39,7 @@ public class Fence : MonoBehaviour {
 	}
 
 	public void InitializePath() {
-		int count = this.nodesContainer.childCount;
-		for (int i = 0; i < count; i++) {
-			this.path.Add(this.nodesContainer.GetChild(i).transform.position);
-		}
+		this.path = FenceDetection.PathFromGround(FindObjectOfType<Ground>());
 		this.UpdateLength();
 	}
 
