@@ -26,8 +26,8 @@ class FenceBuilder {
 
     private static void AddPole(List<Vector3> vertices, List<int> triangles, List<Vector2> uvs, Vector3 p) {
         Vector3 a = p - new Vector3(- 0.1f, 0, - 0.3f);
-        Vector3 b = p - new Vector3(- 0.1f, 0, + 0.3f);
-        Vector3 c = p - new Vector3(+ 0.1f, 0, + 0.3f);
+        Vector3 b = p - new Vector3(- 0.1f, 0.1f, + 0.3f);
+        Vector3 c = p - new Vector3(+ 0.1f, 0.1f, + 0.3f);
         Vector3 d = p - new Vector3(+ 0.1f, 0, - 0.3f);
 
         int l = vertices.Count;

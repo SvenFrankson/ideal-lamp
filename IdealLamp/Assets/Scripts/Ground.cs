@@ -4,12 +4,65 @@ using UnityEngine;
 
 public class Ground : MonoBehaviour {
 
+	private string[][] mapping6x6;
 	public int[] grid;
 	public int width;
 	public int height;
 
 	void Start () {
 		
+	}
+
+	private void Initialize6x6() {
+		this.mapping6x6 = new string[6][];
+		this.mapping6x6[0] = new string[] {
+			"1111",
+			"1100",
+			"0000",
+			"0000",
+			"0011",
+			"1111"
+		};
+		this.mapping6x6[1] = new string[] {
+			"1001",
+			"1000",
+			"0000",
+			"0000",
+			"0001",
+			"1001"
+		};
+		this.mapping6x6[2] = new string[] {
+			"0000",
+			"0000",
+			"0111",
+			"1110",
+			"0000",
+			"0000"
+		};
+		this.mapping6x6[3] = new string[] {
+			"0000",
+			"0000",
+			"1011",
+			"1101",
+			"0000",
+			"0000"
+		};
+		this.mapping6x6[4] = new string[] {
+			"0110",
+			"0100",
+			"0000",
+			"0000",
+			"0010",
+			"0110"
+		};
+		this.mapping6x6[5] = new string[] {
+			"1111",
+			"1100",
+			"0000",
+			"0000",
+			"0011",
+			"1111"
+		};
 	}
 
 	public Vector2[] uvsForABCD(int a, int b, int c, int d) {
