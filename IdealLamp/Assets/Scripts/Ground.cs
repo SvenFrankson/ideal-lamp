@@ -65,6 +65,17 @@ public class Ground : MonoBehaviour {
 		};
 	}
 
+	public Vector2[] IJTo6x6UV(int i, int j) {
+		float fi = (float) i;
+		float fj = (float) j;
+		return new Vector2[] {
+			new Vector2(fi / 6f, fj / 6f),
+			new Vector2(fi / 6f, (fj + 1) / 6f),
+			new Vector2((fi + 1) / 6f, (fj + 1) / 6f),
+			new Vector2((fi + 1) / 6f, fj / 6f)
+		};
+	}
+
 	public Vector2[] uvsForABCD(int a, int b, int c, int d) {
         string s = "" + a + b + c + d;
 		Debug.Log(s);
