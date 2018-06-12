@@ -2,15 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class IJ {
+
+	public int i;
+	public int j;
+
+	public IJ(int i, int j) {
+		this.i = i;
+		this.j = j;
+	}
+}
+
 public class Ground : MonoBehaviour {
 
 	private string[][] mapping6x6;
+	private Dictionary<string, List<IJ>> descToIJ = new Dictionary<string, List<IJ>>();
 	public int[] grid;
 	public int width;
 	public int height;
 
 	void Start () {
-		
+		this.Initialize6x6();
 	}
 
 	private void Initialize6x6() {
@@ -63,17 +75,44 @@ public class Ground : MonoBehaviour {
 			"0011",
 			"1111"
 		};
+
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j < 6; j++) {
+				string desc = this.mapping6x6[j][i];
+				if (!this.descToIJ.ContainsKey(desc)) {
+					this.descToIJ.Add(desc, new List<IJ>());
+				}
+				List<IJ> ijs = this.descToIJ[desc];
+				ijs.Add(new IJ(i, j));
+			}
+		}
 	}
 
-	public Vector2[] IJTo6x6UV(int i, int j) {
-		float fi = (float) i;
-		float fj = (float) j;
+	private Vector2[] IJTo6x6UVs(IJ ij) {
+		float fi = (float) ij.i;
+		float fj = (float) ij.j;
 		return new Vector2[] {
 			new Vector2(fi / 6f, fj / 6f),
 			new Vector2(fi / 6f, (fj + 1) / 6f),
 			new Vector2((fi + 1) / 6f, (fj + 1) / 6f),
 			new Vector2((fi + 1) / 6f, fj / 6f)
 		};
+	}
+
+	private IJ DescTo6x6IJ(string desc) {
+		if (this.descToIJ.Count == 0) {
+			this.Initialize6x6();
+		}
+		if (!this.descToIJ.ContainsKey(desc)) {
+			return new IJ(0, 0);
+		} 
+		List<IJ> ijs = this.descToIJ[desc];
+		int r = UnityEngine.Random.Range(0, ijs.Count - 1);
+		return ijs[r];
+	}
+
+	private Vector2[] DescTo6x6UVs(string desc) {
+		return this.IJTo6x6UVs(this.DescTo6x6IJ(desc));
 	}
 
 	public Vector2[] uvsForABCD(int a, int b, int c, int d) {
@@ -188,7 +227,14 @@ public class Ground : MonoBehaviour {
 				triangles.Add(l + 2);
 				triangles.Add(l + 3);
 
-				Vector2[] rawUvs = this.uvsForABCD(this.grid[i + (j + 1) * this.width], this.grid[i + 1 + (j + 1) * this.width], this.grid[i + 1 + j * this.width], this.grid[i + j * this.width]);
+				//Vector2[] rawUvs = this.uvsForABCD(this.grid[i + (j + 1) * this.width], this.grid[i + 1 + (j + 1) * this.width], this.grid[i + 1 + j * this.width], this.grid[i + j * this.width]);
+				string desc = "";
+				desc += this.grid[i + j * this.width];
+				desc += this.grid[i + (j + 1) * this.width];
+				desc += this.grid[(i + 1) + (j + 1) * this.width];
+				desc += this.grid[(i + 1) + j * this.width];
+				Debug.Log("I = " + i + " J = " + j + " DESC = " + desc);
+				Vector2[] rawUvs = this.DescTo6x6UVs(desc);
 				//rawUvs[0] += new Vector2(0.01f, 0.01f);
 				//rawUvs[1] += new Vector2(0.01f, - 0.01f);
 				//rawUvs[2] += new Vector2(- 0.01f, - 0.01f);
